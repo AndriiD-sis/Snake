@@ -29,6 +29,8 @@ grass = pygame.image.load('grass.png')
 grass = pygame.transform.scale(grass, (WIDTH, HEIGHT))
 apple_image = pygame.image.load('apple.png')
 apple_image = pygame.transform.scale(apple_image, (50, 50))
+snake_head = pygame.image.load('snake_head.png')
+snake_head = pygame.transform.scale(snake_head, (50, 50))
 
 score = 0
 dis_score = pygame.font.SysFont("Arial", 30)
@@ -96,8 +98,22 @@ while running:
 
     for segment in snake_tail:
         pygame.draw.rect(screen, BLUE, segment)
+        
+    head_right = snake_head
+    head_left = pygame.transform.rotate(snake_head, 180)
+    head_up = pygame.transform.rotate(snake_head, 90)
+    head_down = pygame.transform.rotate(snake_head, -90)
 
-    pygame.draw.rect(screen, BLUE, player)
+    if runs == "right":
+        head = head_right
+    elif runs == "left":
+        head = head_left
+    elif runs == "up":
+        head = head_up
+    elif runs == "down":
+        head = head_down
+        
+    screen.blit(head, (player.x, player.y))
     score_text = dis_score.render(f"Рахунок: {score}", True, BLACK)
     screen.blit(score_text, (10, 10))
 
