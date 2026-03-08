@@ -19,6 +19,8 @@ WIDTH, HEIGHT = 800, 600
 CELL = 50
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Snake')
+icon = pygame.image.load('apple.png') #замінити іконку
+pygame.display.set_icon(icon)
 
 # Кольори
 WHITE = (255, 255, 255)
