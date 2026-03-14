@@ -12,7 +12,13 @@ class SnakeMenu(CTk):
         self.title("Snake Menu")
         self.geometry("400x300")
         self.resizable(False, False)
-        self.iconbitmap("apple.png") #Замінити іконку .ico
+        self.iconbitmap("apple.ico")
+        self.bg_image = Image.open("apple.png")
+        self.bg_image = self.bg_image.resize((400, 300)) #знайти норм фон а також прибрати фон в текстах
+        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        
+        self.bg_label = CTkLabel(self, image=self.bg_photo, text="")
+        self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
 
         #Текст
         self.name_label = CTkLabel(
@@ -83,6 +89,3 @@ class SnakeMenu(CTk):
         self.host = self.host_entry.get()
         self.port = int(self.port_entry.get())
         self.destroy()
-
-win = SnakeMenu()
-win.mainloop()

@@ -2,12 +2,17 @@ import pygame
 import socket
 import pickle
 import threading
+from menu import SnakeMenu
+
+win = SnakeMenu()
+win.mainloop()
 
 pygame.init()
 
 # Параметри сервера
-server_ip = 'localhost'
-server_port = 8080
+name = win.name
+server_ip = win.host
+server_port = win.port
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect((server_ip, server_port))
 
@@ -91,7 +96,7 @@ while running:
         move_time = current_time
 
         # Відправка стану на сервер
-        state = {"direction": direction}
+        state = {"direction": direction, "name": name}
         try:
             client.sendall(pickle.dumps(state))
         except:
@@ -110,8 +115,7 @@ while running:
             # хвіст
             for x, y in pdata["tail"]:
                 pygame.draw.rect(screen, BLUE, (x, y, CELL, CELL))
-
-            # голова з поворотом
+            # голова
             pd_direction = pdata.get("direction", "right")
             head_image = snake_head
             if pd_direction == "left":
@@ -121,14 +125,29 @@ while running:
             elif pd_direction == "down":
                 head_image = pygame.transform.rotate(snake_head, -90)
             screen.blit(head_image, (pdata["x"], pdata["y"]))
+                
+    #Відображаємо рахунок разом із нікнеймом
+    p1 = None
+    p2 = None
 
-            # рахунок над головою
-            score_text = font_score.render(str(pdata.get("score", 0)), True, BLACK)
-            screen.blit(score_text, (pdata["x"], pdata["y"] - 30))
+    if "players" in game_state:
+        p1 = game_state["players"].get("player1")
+        p2 = game_state["players"].get("player2")
 
+    if p1:
+        text1 = font_score.render(f"{p1.get('name','P1')}: {p1.get('score',0)}", True, BLACK)
+        screen.blit(text1, (10, 10))
+
+    if p2:
+        text2 = font_score.render(f"{p2.get('name','P2')}: {p2.get('score',0)}", True, BLACK)
+        screen.blit(text2, (WIDTH - text2.get_width() - 10, 10))
+        
     # Перевірка переможця
     if "winner" in game_state:
-        winner_text = font_score.render(f"Переміг: {game_state['winner']}", True, (255,0,0))
+        winner_id = game_state["winner"]
+        winner_name = game_state["players"].get(winner_id, {}).get("name", winner_id)
+        winner_text = font_score.render(f"Переміг: {winner_name}", True, (255, 0, 0))
+    
         screen.blit(winner_text, (WIDTH//2 - 100, HEIGHT//2 - 20))
         pygame.display.flip()
         pygame.time.delay(3000)  # показуємо 3 секунди

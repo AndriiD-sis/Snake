@@ -43,6 +43,9 @@ def handle_client(conn, player_id):
                 # напрямок від клієнта
                 if "direction" in player_state:
                     pdata["direction"] = player_state["direction"]
+                    
+                if "name" in player_state:
+                    pdata["name"] = player_state["name"]
 
                 # рух робить сервер
                 if pdata["direction"] == "left":
@@ -138,7 +141,7 @@ while True:
     player_id = f"player{player_counter + 1}"
     player_counter += 1
 
-    # Додаємо гравця одразу при підключенні, без очікування першого стану
+    # Додаємо гравця одразу при підключенні
     with lock:
         if player_id == "player1":
             start_x = 0
@@ -154,7 +157,8 @@ while True:
             "tail": [],
             "tail_length": 0,
             "direction": start_dir,
-            "score": 0
+            "score": 0,
+            "name": player_id
         }
 
     clients.append(conn)
