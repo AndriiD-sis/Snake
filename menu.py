@@ -13,8 +13,8 @@ class SnakeMenu(CTk):
         self.geometry("400x300")
         self.resizable(False, False)
         self.iconbitmap("apple.ico")
-        self.bg_image = Image.open("apple.png")
-        self.bg_image = self.bg_image.resize((400, 300)) #знайти норм фон а також прибрати фон в текстах
+        self.bg_image = Image.open("bg_menu.png")
+        self.bg_image = self.bg_image.resize((500, 400)) #знайти норм фон а також прибрати фон в текстах
         self.bg_photo = ImageTk.PhotoImage(self.bg_image)
         
         self.bg_label = CTkLabel(self, image=self.bg_photo, text="")
@@ -26,7 +26,9 @@ class SnakeMenu(CTk):
             text="Nikname:",
             width=120,
             height=25,
-            font=("Arial", 20, "bold")
+            font=("Arial", 20, "bold"),
+            text_color="#2B451F",
+            bg_color="#5B933E"
         ).place(x=7, y=45)
 
         self.host_label = CTkLabel(
@@ -34,7 +36,9 @@ class SnakeMenu(CTk):
             text="Hostname:",
             width=120,
             height=25,
-            font=("Arial", 20, "bold")
+            font=("Arial", 20, "bold"),
+            text_color="#2B451F",
+            bg_color="#5B933E"
         ).place(x=0, y=100)
 
         self.port_label = CTkLabel(
@@ -42,7 +46,9 @@ class SnakeMenu(CTk):
             text="Port:",
             width=120,
             height=25,
-            font=("Arial", 20, "bold")
+            font=("Arial", 20, "bold"),
+            text_color="#2B451F",
+            bg_color="#5B933E"
         ).place(x=28, y=155)
 
         #Поля введення
@@ -51,7 +57,8 @@ class SnakeMenu(CTk):
             placeholder_text="Введіть ім'я",
             width=270,
             height=40,
-            corner_radius=0
+            corner_radius=0,
+            bg_color="#5B933E"
         )
         self.name_entry.place(x=120, y=40)
 
@@ -60,7 +67,8 @@ class SnakeMenu(CTk):
             placeholder_text="Введіть назву сервера",
             width=270,
             height=40,
-            corner_radius=0
+            corner_radius=0,
+            bg_color="#5B933E"
         )
         self.host_entry.place(x=120, y=95)
 
@@ -69,7 +77,8 @@ class SnakeMenu(CTk):
             placeholder_text="Введіть порт",
             width=135,
             height=40,
-            corner_radius=0
+            corner_radius=0,
+            bg_color="#5B933E"
         )
         self.port_entry.place(x=120, y=150)
 
@@ -81,7 +90,10 @@ class SnakeMenu(CTk):
             height=55,
             corner_radius=0,
             command=self.open_game,
-            font=("Arial", 25, "bold")
+            font=("Arial", 25, "bold"),
+            fg_color="#2B451F",
+            hover_color="#233719",
+            bg_color="#5B933E"
         ).place(x=25, y=215)
 
     def open_game(self):
@@ -89,3 +101,6 @@ class SnakeMenu(CTk):
         self.host = self.host_entry.get()
         self.port = int(self.port_entry.get())
         self.destroy()
+        
+win = SnakeMenu()
+win.mainloop()
