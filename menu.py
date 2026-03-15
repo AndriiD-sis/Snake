@@ -58,6 +58,11 @@ class SnakeMenu(CTk):
             width=270,
             height=40,
             corner_radius=0,
+            font=("Arial", 17, "bold"),
+            fg_color="#2B451F",
+            text_color="BLACK",
+            placeholder_text_color="BLACK",
+            border_color="BLACK",
             bg_color="#5B933E"
         )
         self.name_entry.place(x=120, y=40)
@@ -68,6 +73,11 @@ class SnakeMenu(CTk):
             width=270,
             height=40,
             corner_radius=0,
+            font=("Arial", 17, "bold"),
+            fg_color="#2B451F",
+            text_color="BLACK",
+            placeholder_text_color="BLACK",
+            border_color="BLACK",
             bg_color="#5B933E"
         )
         self.host_entry.place(x=120, y=95)
@@ -78,6 +88,11 @@ class SnakeMenu(CTk):
             width=135,
             height=40,
             corner_radius=0,
+            font=("Arial", 17, "bold"),
+            fg_color="#2B451F",
+            text_color="BLACK",
+            placeholder_text_color="BLACK",
+            border_color="BLACK",
             bg_color="#5B933E"
         )
         self.port_entry.place(x=120, y=150)
@@ -92,6 +107,7 @@ class SnakeMenu(CTk):
             command=self.open_game,
             font=("Arial", 25, "bold"),
             fg_color="#2B451F",
+            text_color="BLACK",
             hover_color="#233719",
             bg_color="#5B933E"
         ).place(x=25, y=215)
@@ -101,6 +117,3 @@ class SnakeMenu(CTk):
         self.host = self.host_entry.get()
         self.port = int(self.port_entry.get())
         self.destroy()
-        
-win = SnakeMenu()
-win.mainloop()
