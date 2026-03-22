@@ -47,7 +47,7 @@ def handle_client(conn, player_id):
                 if "name" in player_state:
                     pdata["name"] = player_state["name"]
 
-                # рух робить сервер
+                # рух
                 if pdata["direction"] == "left":
                     pdata["x"] -= CELL
                 elif pdata["direction"] == "right":
@@ -57,7 +57,7 @@ def handle_client(conn, player_id):
                 elif pdata["direction"] == "down":
                     pdata["y"] += CELL
                     
-                # перевірка меж
+                # перевірка меж поля
                 if (
                     pdata["x"] < 0
                     or pdata["x"] >= WIDTH

@@ -73,7 +73,7 @@ font_score = pygame.font.SysFont("Arial", 30)
 while running:
     current_time = pygame.time.get_ticks()
 
-    # Обробка подій
+    # Обробка подій (рух)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -151,7 +151,7 @@ while running:
         screen.blit(winner_text, (WIDTH//2 - 100, HEIGHT//2 - 20))
         pygame.display.flip()
         pygame.time.delay(3000)  # показуємо 3 секунди
-        running = False  # зупиняємо гру
+        running = False
 
     pygame.display.flip()
     clock.tick(60)
