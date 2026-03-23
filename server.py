@@ -8,6 +8,7 @@ WIDTH, HEIGHT = 800, 600
 CELL = 50
 zone_up = WIDTH // CELL
 zone_down = HEIGHT // CELL
+stop = True
 
 game_data = {
     "players": {},
@@ -57,7 +58,7 @@ def handle_client(conn, player_id):
                 elif pdata["direction"] == "down":
                     pdata["y"] += CELL
                     
-                # перевірка меж поля
+                # межі
                 if (
                     pdata["x"] < 0
                     or pdata["x"] >= WIDTH
@@ -83,7 +84,7 @@ def handle_client(conn, player_id):
                         # зіткнення з чужим хвостом або головою
                         if (pdata["x"], pdata["y"]) in other_data["tail"] or (pdata["x"], pdata["y"]) == (other_data["x"], other_data["y"]):
                             print(player_id, "врізався в іншого гравця")
-                            game_data["winner"] = other_id  # переміг той, в кого врізалися
+                            game_data["winner"] = other_id  # переміг той в кого врізалися
 
                 # хвіст
                 pdata["tail"].insert(0, (pdata["x"], pdata["y"]))
@@ -103,16 +104,21 @@ def handle_client(conn, player_id):
         print(f"{player_id} відключився")
 
     finally:
+        global stop
         with lock:
             if player_id in game_data["players"]:
                 del game_data["players"][player_id]
             if conn in clients:
                 clients.remove(conn)
-
+            if len(clients) == 0: #зупинка
+                    print("Сервер вимкнено")
+                    stop = False
+                    
         conn.close()
 
 def broadcast_game_state():
-    while True:
+    global stop
+    while stop:
         with lock:
             for c in clients:
                 try:
@@ -122,17 +128,21 @@ def broadcast_game_state():
                         clients.remove(c)
         time.sleep(0.1)
 
-# Запуск сервера
+# старт
 sock = socket(AF_INET, SOCK_STREAM)
 sock.bind(('localhost', 8080))
 sock.listen(2)
+sock.settimeout(1)
 print("Сервер запущено")
 
 Thread(target=broadcast_game_state, daemon=True).start()
 
 player_counter = 0
-while True:
-    conn, addr = sock.accept()
+while stop:
+    try:
+        conn, addr = sock.accept()
+    except:
+        continue
     if player_counter >= 2:
         conn.sendall(b"FULL")
         conn.close()
@@ -141,7 +151,7 @@ while True:
     player_id = f"player{player_counter + 1}"
     player_counter += 1
 
-    # Додаємо гравця одразу при підключенні
+    # Додаємо гравця одразу при підключенні (по різним кутам)
     with lock:
         if player_id == "player1":
             start_x = 0
@@ -163,7 +173,7 @@ while True:
 
     clients.append(conn)
 
-    # Надсилаємо новому гравцю повний стан гри
+    # надсилання стану гри іншому гравцю
     try:
         conn.sendall(pickle.dumps(game_data))
     except:

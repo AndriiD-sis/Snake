@@ -24,7 +24,7 @@ WIDTH, HEIGHT = 800, 600
 CELL = 50
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Snake')
-icon = pygame.image.load('apple.png') #замінити іконку
+icon = pygame.image.load('apple.png')
 pygame.display.set_icon(icon)
 
 # Кольори
@@ -73,7 +73,7 @@ font_score = pygame.font.SysFont("Arial", 30)
 while running:
     current_time = pygame.time.get_ticks()
 
-    # Обробка подій (рух)
+    # рух
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -102,7 +102,7 @@ while running:
         except:
             print("Втрата з'єднання з сервером")
 
-    # Малювання
+    # Малювання фону
     screen.blit(grass, (0, 0))
 
     # Яблуко
@@ -150,7 +150,7 @@ while running:
     
         screen.blit(winner_text, (WIDTH//2 - 100, HEIGHT//2 - 20))
         pygame.display.flip()
-        pygame.time.delay(3000)  # показуємо 3 секунди
+        pygame.time.delay(3000)  # показуємо 3 секунди, далі авто лів
         running = False
 
     pygame.display.flip()
